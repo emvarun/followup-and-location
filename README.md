@@ -34,7 +34,7 @@ II. WORKING WITH THE CODE: STEP BY STEP
 The released set of fits file can be downloaded from "http://www.ligo.org/scientists/first2years/".
 The following step is to edit the dates of the fits file to the period of interest -- say LIGO 
 observational period. Also, for ease of analysis segregate the patches into two folders one with 
-patches recovered with 2 detector network and the other with three detectors.
+patches recovered with two detector network and the other with three detectors.
 
 2.	Edit dates with EditDate.py
 ------------------------------------------------
