@@ -43,7 +43,7 @@ Further the events must be smeared uniformly over a given observational period. 
 orientation doesn't change with respect to the earth. In other words, the sidereal time must 
 remain invariant. 
 
-3.	Getting the observed probability for each event at a given location and allowing time 't' after the trigger
+3.	Getting the observed probability for each event -- given a location and time 't' after the trigger to followup
 ------------------------------------------------
 One is free to use any location in the observatory file, add locations  in  the "Observatory.py" 
 file to  consider other locations of interest. In our analysis we consider a period of 
@@ -57,7 +57,7 @@ capability (N square degree), edit the variable "NsqDeg". NOTE: Observatory is a
 here. The correct word is location as we don't consider any observatory parameters. The term 
 observatory is just used for convenient referencing.
 				
-4.	Post Analysis of the file obtained with probability covered for N square degree capability and a given location
+4.	Analysis 
 ------------------------------------------------
 The file "Results.py" gives the probability covered, however there are different combinations from which one could
 choose. Like the number of detectors to consider(comb), take events only around a given period or the year or not 
