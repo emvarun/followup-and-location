@@ -31,35 +31,38 @@ II. WORKING WITH THE CODE: STEP BY STEP
 
 1.	Obtaining the fits files
 ------------------------------------------------
-				The released set of fits file can be downloaded from "http://www.ligo.org/scientists/first2years/".
-		The following step is to edit the dates of the fits file to the period of interest -- say LIGO observational period.
-		Also, for ease of analysis segregate the patches into two folders one with patches recovered with 2 detector network 
-		and the other with three detectors.
+The released set of fits file can be downloaded from "http://www.ligo.org/scientists/first2years/".
+The following step is to edit the dates of the fits file to the period of interest -- say LIGO 
+observational period. Also, for ease of analysis segregate the patches into two folders one with 
+patches recovered with 2 detector network and the other with three detectors.
 
 2.	Edit dates with EditDate.py
 ------------------------------------------------
-				There are two cautions to be taken care of. First, the detector schedule during a given period. Further the events
-		must be smeared uniformly over a given observational period. Second, the patch orientation doesn't change with respect 
-		to the earth. In other words, the sidereal time must remain invariant. 
+There are two cautions to be taken care of. First, the detector schedule during a given period. 
+Further the events must be smeared uniformly over a given observational period. Second, the patch 
+orientation doesn't change with respect to the earth. In other words, the sidereal time must 
+remain invariant. 
 
 3.	Getting the observed probability for each event at a given location and allowing time 't' after the trigger
 ------------------------------------------------
-				One is free to use any location in the observatory file, add locations  in  the "Observatory.py" file to  consider
-		other locations of interest. In our analysis we consider a period of twenty-four hours after the trigger. However, one
-		can tune this  parameter. We consider the patch (rise or set) in steps of 600 seconds. 
-				The "Loop_SkyPatch.py" loops and analyses all the fits files present in a directory. For each location  considered 
-		in the list "obsName" of this file, one obtains the probability covered for all the events  ( fits files in the parsed 
-		directory) in an output text file named after the observatory considered. This covered probability is calculated in the 
-		"Sky_Patch.py" file. If one wishes to change the camera capability (N square degree), edit the variable "NsqDeg". 
-				NOTE: Observatory is a misnomer here. The correct word is location as we don't consider any observatory parameters. 
-		The term observatory is just used for convenient referencing.
+One is free to use any location in the observatory file, add locations  in  the "Observatory.py" 
+file to  consider other locations of interest. In our analysis we consider a period of 
+twenty-four hours after the trigger. However, one can tune this  parameter. We consider the 
+patch (rise or set) in steps of 600 seconds. The "Loop_SkyPatch.py" loops and analyses all the 
+fits files present in a directory. For each location  considered in the list "obsName" of this 
+file, one obtains the probability covered for all the events  ( fits files in the parsed 
+directory) in an output text file named after the observatory considered. This covered 
+probability is calculated in the 		"Sky_Patch.py" file. If one wishes to change the camera 
+capability (N square degree), edit the variable "NsqDeg". NOTE: Observatory is a misnomer 
+here. The correct word is location as we don't consider any observatory parameters. The term 
+observatory is just used for convenient referencing.
 				
 4.	Post Analysis of the file obtained with probability covered for N square degree capability and a given location
 ------------------------------------------------
-				The file "Results.py" gives the probability covered, however there are different combinations from which one could
-		choose. Like the number of detectors to consider(comb), take events only around a given period or the year or not 
-		(Indicomb), one can also add which pair of detectors to choose HL or LV or HV, however, that version isn't shared 
-		to avoid too much complicacy. Run "Coverage_Analysis.py" and at the end one would obtain a boxplot and a table in 
-		"tex" format which has the values of median, median and the quartiles . 
+The file "Results.py" gives the probability covered, however there are different combinations from which one could
+choose. Like the number of detectors to consider(comb), take events only around a given period or the year or not 
+(Indicomb), one can also add which pair of detectors to choose HL or LV or HV, however, that version isn't shared 
+to avoid too much complicacy. Run "Coverage_Analysis.py" and at the end one would obtain a boxplot and a table in 
+"tex" format which has the values of median, median and the quartiles . 
 	
 For any queries feel free to contact "varun.srivastava@students.iiserpune.ac.in"
