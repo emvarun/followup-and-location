@@ -62,7 +62,7 @@ observatory is just used for convenient referencing.
 The file "Results.py" gives the probability covered, however there are different combinations from which one could
 choose. Like the number of detectors to consider(comb), take events only around a given period or the year or not 
 (Indicomb), one can also add which pair of detectors to choose HL or LV or HV, however, that version isn't shared 
-to avoid too much complicacy. Run "Coverage_Analysis.py" and at the end one would obtain a boxplot and a table in 
+to avoid too much complicacy. Run "Coverage_Analysis.py" which summarizes the results in a boxplot. A table in 
 "tex" format which has the values of median, median and the quartiles . 
 	
 For any queries feel free to contact "varun.srivastava@students.iiserpune.ac.in"
