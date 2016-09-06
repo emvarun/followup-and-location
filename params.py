@@ -8,7 +8,6 @@ suffix2ModDateFits = 'Mod-Date'
 
 #################################### LOCATIONS ##########################################
 Observatory_Locations = ObsDetail()
-print Observatory_Locations
 ############################## SKY PATCH AND LOOP SKY PATCH #############################
 # Texp is how many hours after the trigger one could possibly followup
 Texp = 24
