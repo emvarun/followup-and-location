@@ -78,9 +78,9 @@ square degrees for a given fits file. The file "Loop_SkyPatch.py" loops over all
 in the folder "folddir", and returns a text file which contains the probability covered upto 
 the given N square degrees "NsqDeg", for all the fits files one runs over. To run this part, 
 open the terminal and once in the directory where these codes exist, run 
-'''python
+$$$python
 python Loop_SkyPatch.py
-'''
+$$$
 One will get the output files in the directory given by variable "Location_Datafiles" in the 
 "params.py" file. The file "params.py" also contains the description of all the variables involved.
 				
