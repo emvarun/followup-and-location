@@ -82,7 +82,7 @@ The file "Results.py" reads the output data files from the previous step. One ne
 run "python Coverage_Analysis.py". The code returns a boxplot which compares the performance
 of different locations for all the fits files. A table is returned which contains the mean 
 and median of the probability distribution for a given location and the second and third 
-quartile values.
+quartile values. The "params.py" explains the variables involved.
 
 	
 For any queries feel free to contact "varun.srivastava@students.iiserpune.ac.in"
