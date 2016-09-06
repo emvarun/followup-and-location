@@ -35,7 +35,7 @@ I. PACKAGE REQUIRED
 II.	INSTALLATION GUIDELINES
 ================================================
 To download all the codes kindly run the following command in the terminal:
-```python
+```html
 git clone https://github.com/emvarun/followup-and-location
 ```
 
