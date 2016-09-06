@@ -34,9 +34,10 @@ I. PACKAGE REQUIRED
 
 II.	INSTALLATION GUIDELINES
 ================================================
-To download all the codes kindly run the following command in the terminal.
-		git clone https://github.com/emvarun/followup-and-location
-
+To download all the codes kindly run the following command in the terminal:
+'''python
+git clone https://github.com/emvarun/followup-and-location
+'''
 
 
 III. WORKING WITH THE CODE: STEP BY STEP
@@ -56,7 +57,9 @@ patches of "fits-2015" are for an LIGO-O1 detector sensitivity, while the same f
 The following step is to edit the dates of trigger in the original fits file header 
 to the period of interest -- say LIGO observational period. Run the file in the terminal 
 as 
-		python EditDate.py
+'''python
+python EditDate.py
+'''
 The user will be  prompted if they want to change the date of 
 injection in the released fits file to a period of their interest. The new files will be 
 saved in the same directory with the released set of files but will have a "Mod-Date" 
@@ -75,7 +78,9 @@ square degrees for a given fits file. The file "Loop_SkyPatch.py" loops over all
 in the folder "folddir", and returns a text file which contains the probability covered upto 
 the given N square degrees "NsqDeg", for all the fits files one runs over. To run this part, 
 open the terminal and once in the directory where these codes exist, run 
-		python Loop_SkyPatch.py
+'''python
+python Loop_SkyPatch.py
+'''
 One will get the output files in the directory given by variable "Location_Datafiles" in the 
 "params.py" file. The file "params.py" also contains the description of all the variables involved.
 				
@@ -83,8 +88,10 @@ One will get the output files in the directory given by variable "Location_Dataf
 4.	Post-Analysis: Plots and Tables
 ------------------------------------------------
 The file "Results.py" reads the output data files from the previous step. One needs to 
-run 
-		python Coverage_Analysis.py 
+run
+'''python 
+python Coverage_Analysis.py 
+'''
 The code returns a boxplot which compares the performance
 of different locations for all the fits files. A table is returned which contains the mean 
 and median of the probability distribution for a given location and the second and third 
