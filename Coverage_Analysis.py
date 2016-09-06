@@ -89,7 +89,7 @@ def Analysis(n, numBoxes, nSubplots, top, bottom, boxColors, obsName, Observator
 
 
 
-pt = PdfPages('test.pdf')
+pt = PdfPages(BoxplotFile)
 
 n, numBoxes = ReadData(Location_Datafiles, NsqDeg, obsName, Ndets, IfAllNDet, Period, PeriodComb)
 

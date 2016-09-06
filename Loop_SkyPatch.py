@@ -15,7 +15,7 @@ for i in range (0, len(obsName)):
 			name = filename.strip().split('.')
 			if(name[-1] == 'gz' ):
 				print obsName[i], path
-				nlist = Coverage(str(path), obsName[i], Texp, NsqDeg)
+				nlist = Coverage(str(path), obsName[i], Texp, NsqDeg, stepsize)
 				tCoverage.append(nlist)
 
 	f=open( str(outfile) + '-' + str(obsName[i]) + '.txt','w') 

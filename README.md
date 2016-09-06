@@ -1,14 +1,20 @@
-I. PACKAGE REQUIRED AND INSTALLATION GUIDELINES
+I. PACKAGE REQUIRED
 ================================================
 
-1.		ASTROPY
+1.		NUMPY
+------------------------------------------------
+		a.	sudo apt-get install python-numpy
+
+
+
+2.		ASTROPY
 ------------------------------------------------
 		a.	Using pip
 				pip install --no-deps astropy
 		b.	Anaconda python distribution
 				conda install astropy
 
-2.		HEALPY
+3.		HEALPY
 ------------------------------------------------
 		a.	Using pip
 				pip install --user healpy
@@ -21,48 +27,62 @@ I. PACKAGE REQUIRED AND INSTALLATION GUIDELINES
 				python setup.py install --user
 				popd
 
-3.		EPHEM
+4.		EPHEM
 ------------------------------------------------
 		a. pip install ephem
 
 
-II. WORKING WITH THE CODE: STEP BY STEP
+II.	INSTALLATION GUIDELINES
 ================================================
+
+
+
+
+
+
+III. WORKING WITH THE CODE: STEP BY STEP
+================================================
+
 
 1.	Obtaining the fits files
 ------------------------------------------------
 The released set of fits file can be downloaded from "http://www.ligo.org/scientists/first2years/".
-The following step is to edit the dates of the fits file to the period of interest -- say LIGO 
-observational period. Also, for ease of analysis segregate the patches into two folders one with 
-patches recovered with two detector network and the other with three detectors.
+The following step is to edit the dates of the fits file to the period of interest 
+-- say LIGO observational period. 
 
-2.	Edit dates with EditDate.py
-------------------------------------------------
-There are two cautions to be taken care of. First, the detector schedule during a given period. 
-Further the events must be smeared uniformly over a given observational period. Second, the patch 
-orientation doesn't change with respect to the earth. In other words, the sidereal time must 
-remain invariant. 
 
-3.	Getting the observed probability for each event -- given a location and time 't' after the trigger to followup
+2.	Edit dates
 ------------------------------------------------
-One is free to use any location in the observatory file, add locations  in  the "Observatory.py" 
-file to  consider other locations of interest. In our analysis we consider a period of 
-twenty-four hours after the trigger. However, one can tune this  parameter. We consider the 
-patch (rise or set) in steps of 600 seconds. The "Loop_SkyPatch.py" loops and analyses all the 
-fits files present in a directory. For each location  considered in the list "obsName" of this 
-file, one obtains the probability covered for all the events  ( fits files in the parsed 
-directory) in an output text file named after the observatory considered. This covered 
-probability is calculated in the 		"Sky_Patch.py" file. If one wishes to change the camera 
-capability (N square degree), edit the variable "NsqDeg". NOTE: Observatory is a misnomer 
-here. The correct word is location as we don't consider any observatory parameters. The term 
-observatory is just used for convenient referencing.
+Run the file in the terminal as "python EditDate.py". The user will be  prompted if 
+they want to change the date of injection in the released fits file to a period of 
+their interest. The new files will be saved in the same directory with the released 
+set of files but will have a "Mod-Date" suffixed in their name. The user is free to
+move them to a convenient folder of his interest. NOTE: Update the variable "folddir" 
+in "params.py" file to the folder directory which contains all the fits file one 
+wishes to analyse over.
+
+
+3.	Analysis
+------------------------------------------------
+The locations that one wishes to analyse can be added in the "Observatory.py" file.
+To remove locations one can simply comment them out. Once the folder directory 
+"folddir" is updated. One can proceed with the analysis of the fits files. The 
+variables involved are listed in "params.py". The file "Sky_patch.py" evaluates the 
+probability covered upto N square degrees for a given fits file. The file "Loop_SkyPatch.py" 
+loops over all the files in the folder "folddir", and returns a text file which contains 
+the probability covered upto the given N square degrees "NsqDeg", for all the fits files 
+one runs over. To run this part, open the terminal and once in the directory where these 
+codes exist, run "python Loop_SkyPatch.py". One will get the output files in the directory 
+given by variable "Location_Datafiles" in the "params.py" file. 
 				
-4.	Analysis 
+
+4.	Post-Analysis: Plots and Tables
 ------------------------------------------------
-The file "Results.py" gives the probability covered, however there are different combinations from which one could
-choose. Like the number of detectors to consider(comb), take events only around a given period or the year or not 
-(Indicomb), one can also add which pair of detectors to choose HL or LV or HV, however, that version isn't shared 
-to avoid too much complicacy. Run "Coverage_Analysis.py" which summarizes the results in a boxplot. A table in 
-"tex" format which has the values of median, median and the quartiles . 
+The file "Results.py" reads the output data files from the previous step. One needs to 
+run "python Coverage_Analysis.py". The code returns a boxplot which compares the performance
+of different locations for all the fits files. A table is returned which contains the mean 
+and median of the probability distribution for a given location and the second and third 
+quartile values.
+
 	
 For any queries feel free to contact "varun.srivastava@students.iiserpune.ac.in"

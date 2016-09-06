@@ -78,10 +78,9 @@ def totalSkyPatch(fitsfile, pixprob, theta, phi, obsName, nsteps, h, twilight=18
 	return probObserve, nObserve, [stim, detectors]
 
 
-def Coverage(fitsfile, obsName, Texp, NsqDeg):
+def Coverage(fitsfile, obsName, Texp, NsqDeg, h):
 	# Texp is how many hours after the trigger one could possibly followup
 	Texp2secs = Texp*3600
-	h = 600 #steps in secs
 	nsteps = Texp2secs/h
 	fin_pixProb, fin_theta, fin_phi, nside, pixArea = Patch(fitsfile)
 	probObserve, nObserve, timdet = totalSkyPatch(fitsfile, fin_pixProb, fin_theta, fin_phi, obsName, nsteps, h)
