@@ -37,7 +37,7 @@ def GetFitsfilesList(rootdir):
 	return fitsfiles
 
 def PromptStartEndDate():
-	input_list= raw_input( 'Enter the start date of LIGO Operation: (Day, Month, Year)  ')
+	input_list= raw_input( 'Enter the start date of LIGO Operation: (eg. 22, 8, 2016)  ')
 	start_LIGO = StdDatetoMJD(input_list)
 	input_list = raw_input('Enter the stop date of LIGO Operation: (Day, Month, Year)   ')
 	stop_LIGO = StdDatetoMJD(input_list)
@@ -49,6 +49,8 @@ def PromptStartEndDate():
 	return start_LIGO, stop_LIGO, start_VIRGO, stop_VIRGO
 
 def getOverlap(start_LIGO, stop_LIGO, start_VIRGO, stop_VIRGO):
+	'''	Check if the two periods of observation have any overlap.
+	'''
 	overlap = False
 	if(start_LIGO < start_VIRGO and stop_LIGO > start_VIRGO):
 		overlap = True
@@ -57,8 +59,10 @@ def getOverlap(start_LIGO, stop_LIGO, start_VIRGO, stop_VIRGO):
 	return overlap, [ min(start_LIGO, start_VIRGO), max(stop_LIGO, stop_VIRGO) ]
 
 def TransformDates(Inj_time, delta, longDeg = '45d'):
+	'''	Transforming the patch to a time on a given day such that the relative orientation 
+			of the patch doesn't change -- sidereal time is invariant.
+	'''
 	time = Time( Inj_time, format = 'iso', scale = 'utc', location = (longDeg, '45d') )
-	time = time.mjd
 	#23h56m4.090530833s mjd to transform by one sidereal day 0.9972695663290856
 	time = time + 0.99726957*int(delta)
 	time = Time( time, format = 'mjd', scale = 'utc', location = (longDeg, '45d') )
@@ -79,16 +83,22 @@ def EditDates(fitsfile, start_LIGO, stop_LIGO, start_VIRGO, stop_VIRGO, suffixti
 	isoverlap, period = getOverlap(start_LIGO, stop_LIGO, start_VIRGO, stop_VIRGO)
 	if(dets.find('H1') != -1 and dets.find('L1') != -1 and dets.find('V1') == -1): 										# HL Patches
 		if(isoverlap == False):
-			NewDate = [ np.random.uniform(start_LIGO, stop_LIGO), np.random.uniform(start_VIRGO, stop_VIRGO) ]
-			NewDate = np.random.choice(NewDate)	
-		else:		
-			NewDate = np.random.uniform(period[0], period[1])
+			NewDate = [ np.random.uniform(start_LIGO, stop_LIGO + 1), np.random.uniform(start_VIRGO, stop_VIRGO + 1) ]
+			Period_LIGO, Period_VIRGO = stop_LIGO + 1. - start_LIGO, stop_VIRGO + 1 - start_VIRGO
+			AcceptRatio = Period_LIGO/(Period_VIRGO+Period_LIGO)
+			RandomNo = np.random.uniform(0.,1.) 
+			if(RandomNo <= AcceptRatio):
+				NewDate = NewDate[0]
+			else:
+				NewDate = NewDate[1]
+		else:
+			NewDate = np.random.uniform(period[0], period[1] + 1)
 
 	if(dets.find('H1') != -1 and dets.find('L1') != -1 and dets.find('V1') != -1):										# Three Detector Patches
-		NewDate = np.random.uniform(start_VIRGO, stop_VIRGO) 
+		NewDate = np.random.uniform(start_VIRGO, stop_VIRGO + 1) 
 
 	if(dets.find('H1') != -1 or dets.find('L1') != -1 and dets.find('V1') != -1 and len(dets) < 6):		# HV or LV patches
-		NewDate = np.random.uniform(start_VIRGO, stop_VIRGO) 
+		NewDate = np.random.uniform(start_VIRGO, stop_VIRGO + 1) 
 
 	NewDate = Time( NewDate, format = 'mjd', scale = 'utc')
 	delta = (NewDate.value - Inj_time)

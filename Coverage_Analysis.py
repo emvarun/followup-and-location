@@ -9,6 +9,12 @@ from astropy.table import Table
 from params import *
 
 def boxPlot(data, numBoxes, boxColors, ax):
+	''' The function returns a boxplot for a given data set. The median of the 
+			distribution is repreasented by a line, the mean is marked with a star.
+			The edges of the box mark the first and the third quartile.
+			To see more details of the parameters involved kindly visit:
+			http://matplotlib.org/api/pyplot_api.html
+	'''
 	bp = ax.boxplot(data, notch=0, sym='+', vert=1, whis=1.5)
 	plt.setp(bp['boxes'], color='black', lw = 2)
 	plt.setp(bp['whiskers'], color='black', lw = 2)
@@ -31,6 +37,10 @@ def boxPlot(data, numBoxes, boxColors, ax):
 	return bp, Cords
 
 def ReadData(Location_Datafiles, NsqDeg, obsName, Ndets, IfAllNDet, Period, PeriodComb):
+	'''	Reads the data from the output text files obtained from Loop_SkyPatch and returns
+			it as a nested list. The nested list enumerates the probability covered for all the 
+			patches and NsqDeg covering capability for each location considered. 
+	'''
 	n = []
 	for i in range(0, len(NsqDeg)):
 		n.append([])
@@ -42,6 +52,9 @@ def ReadData(Location_Datafiles, NsqDeg, obsName, Ndets, IfAllNDet, Period, Peri
 	return n, len(n[1])
 
 def Analysis(n, numBoxes, nSubplots, top, bottom, boxColors, obsName, Observatory_Locations, title):
+	'''	Creates the boxplots for different N square degrees covered and also writes 
+			the table.
+	'''
 	plt.figure(num=None, figsize=(22, 28), dpi=80, facecolor='w', edgecolor='k')
 	t = Table(names=("Observatory", "Lower Box", "Upper Box", "Mean", "Median"), dtype=('S20', 'S6', 'S6', 'S6', 'S6') ) 
 	t["Observatory"].format = '^'

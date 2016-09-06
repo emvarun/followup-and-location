@@ -11,6 +11,8 @@ from ephem import *
 from params import Observatory_Locations
 
 def Patch(fitsfile, verbose=False, prob_cover=0.99):
+	'''	Reads the patch and considers only an area upto the prob_cover variable.
+	'''
 	(pixProb, header) = hp.read_map(fitsfile, field=0, nest=False, hdu=1, h=True, verbose=False, memmap=False)
 	nside = hp.npix2nside(len(pixProb))
 	theta, phi = hp.pix2ang(nside, np.arange(0, len(pixProb)), nest=False)
@@ -32,6 +34,10 @@ def Patch(fitsfile, verbose=False, prob_cover=0.99):
 
 
 def onSkyPatch(pixprob, fin_theta, fin_phi, total_prob, obsName, tim, twilight=18., verbose=False):
+	'''	Modifying the patch accordingly as it becomes observable. The time step after
+			which the changed sky position of the sky is considered is defined by the variable
+			stepsize in params file.
+	'''
 	RA, Dec = np.rad2deg(fin_phi), np.rad2deg(np.pi/2.0 - fin_theta)	# RA & Dec of pixels
 
 	skycords = SkyCoord(RA*u.deg, Dec*u.deg)
@@ -54,6 +60,9 @@ def onSkyPatch(pixprob, fin_theta, fin_phi, total_prob, obsName, tim, twilight=1
 
 
 def totalSkyPatch(fitsfile, pixprob, theta, phi, obsName, nsteps, h, twilight=18., verbose=False):
+	'''	Returns the total probability visible for a patch, given some time t to follow the
+			patch after the trigger. This variable is defined in the params file as Texp.
+	'''
 	(pixelProb, header) = hp.read_map(fitsfile, field=0, nest=False, hdu=1, h=True, verbose=False, memmap=False)
 	total_prob = np.sum(pixelProb)
 	f = fits.open(fitsfile)
@@ -79,6 +88,11 @@ def totalSkyPatch(fitsfile, pixprob, theta, phi, obsName, nsteps, h, twilight=18
 
 
 def Coverage(fitsfile, obsName, Texp, NsqDeg, h):
+	'''	Returns the probability covered for a given patch and a specific location -- given
+			that location has a covering capability of N square degree.
+			A small note: the value (higher) or the number of values given in NsqDeg do not effect
+			the computation time.
+	'''
 	# Texp is how many hours after the trigger one could possibly followup
 	Texp2secs = Texp*3600
 	nsteps = Texp2secs/h
