@@ -35,8 +35,7 @@ I. PACKAGE REQUIRED
 II.	INSTALLATION GUIDELINES
 ================================================
 
-
-
+git clone https://github.com/emvarun/followup-and-location
 
 
 
@@ -85,4 +84,4 @@ and median of the probability distribution for a given location and the second a
 quartile values. The "params.py" explains the variables involved.
 
 	
-For any queries feel free to contact "varun.srivastava@students.iiserpune.ac.in"
+For any queries feel free to contact me Varun Srivastava (varun.srivastava@students.iiserpune.ac.in)
