@@ -4,25 +4,12 @@ import os
 import subprocess	
 from subprocess import Popen, PIPE
 from Sky_Patch import Coverage
-from optparse import OptionParser
-
-parser = OptionParser()
-parser.add_option("-i", "--inputdir", action="store", type="string", metavar=" NAME", help="Input Directory of fits files")
-parser.add_option("-o", "--outfile", action="store", type="string", metavar=" NAME", help="Name of output file")
-parser.add_option("-t", "--exptime", action="store", type="int", metavar=" NAME", help="time allowed to followup each event")
-(opts,args) = parser.parse_args()
-
-rootdir = opts.inputdir
-outfile = opts.outfile
-Texp = opts.exptime
+from params import *
 
 #LIST OF LOCATIONS CONSIDERED
-obsName = ['PTF', 'Hanle']
-NsqDeg = [ 1., 3., 10., 30., 100., 200., 300. ]
-
 for i in range (0, len(obsName)):
 	tCoverage = []
-	for dirpath, dirname, files in os.walk(rootdir):
+	for dirpath, dirname, files in os.walk(folddir):
 		for filename in files:
 			path = os.path.join(dirpath, filename)
 			name = filename.strip().split('.')
