@@ -5,6 +5,10 @@ from Observatory import ObsDetail
 rootdir = '/home/varun/IUCAA/O2-Analysis/Sky_Patch/EM-Analysis-Patch/All-2015'
 #Suffix the modified patches with:
 suffix2ModDateFits = 'Mod-Date'
+# The location where the files with modified days are saved. 
+folddir = '/home/varun/IUCAA/O2-Analysis/Sky_Patch/Mod-Dates/O1-Period'
+if not os.path.exists(folddir):
+	os.makedirs(folddir)
 
 #################################### LOCATIONS ##########################################
 Observatory_Locations = ObsDetail()
@@ -20,24 +24,26 @@ obsName = Observatory_Locations.keys()
 # The list of square degrees of capability you wish to empower each location with
 # CAUTION: Please ensure these numbers are in ascending order
 NsqDeg = [ 1., 3., 10., 30., 100., 300. ]
-# The location of all the fitsfile which one wishes to consider for analysis
-folddir = '/home/varun/IUCAA/O2-Analysis/Sky_Patch/EM-Analysis-Patch/All-2015'
-# The prefixed name of the output file containing the probability covered for the various 
-# N square degrees considered. The actual-file will follow the name of observatory  under
-# consideraton
 
 ################################## Coverage Analysis ####################################
 # Location_Datafiles is the desired location for saving the output text files
 Location_Datafiles = '/home/varun/IUCAA/O2-Analysis/Sky_Patch/followup-and-location'
-outfile = os.path.join(Location_Datafiles, 'Summary')
+if not os.path.exists(Location_Datafiles):
+	os.makedirs(Location_Datafiles)
+# The prefixed name of the output file containing the probability covered for the various 
+# N square degrees considered. The actual-file will follow the name of observatory  under
+# consideraton 
+outfile = os.path.join(Location_Datafiles, 'O1-Summary') 
 
 # Color coding for the different boxplots
-boxColors = [ 'RoyalBlue', 'Orange', 'RoyalBlue', 'deepskyblue', 'deepskyblue', 
-							'deepskyblue', 'deepskyblue', 'Red', 'Red', 'darkgoldenrod', 'Lime', 
-							'Red', 'Lime']
+boxColors = []
+for i in obsName:
+	boxColors.append(Observatory_Locations[i].color)
 
-SubplotTitle = ['1 sq. degrees', '3 sq. degrees', '10 sq. degrees', '30 sq. degrees', 
-								'100 sq. degrees', '300 sq. degrees' ]
+# Sub-titles in the box plots
+SubplotTitle = []
+for i in NsqDeg:
+	SubplotTitle.append( str(i) + ' Square Degrees')
 
 # Y-axis limits of each of the subplots
 yaxisTop = [0.015, 0.05, 0.15, 0.4, 0.8, 1.0]

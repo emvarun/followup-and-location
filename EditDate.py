@@ -7,7 +7,7 @@ import os, re
 
 def PromptEditDate():
 	boolval= raw_input('Do you wish to edit the dates of LIGO science run? The released dates are from August to October. \n')
-	if( boolval == 'True' or boolval == 'Yes' or boolval == 'yes' or boolval == 'y'  or boolval == 'Y' or boolval == 1):
+	if( boolval == 'True' or boolval == 'Yes' or boolval == 'yes' or boolval == 'y'  or boolval == 'Y' or boolval == '1'):
 		boolval = True
 	else:
 		boolval = False
@@ -64,13 +64,13 @@ def TransformDates(Inj_time, delta, longDeg = '45d'):
 	'''
 	time = Time( Inj_time, format = 'iso', scale = 'utc', location = (longDeg, '45d') )
 	#23h56m4.090530833s mjd to transform by one sidereal day 0.9972695663290856
+	time = time.mjd
 	time = time + 0.99726957*int(delta)
 	time = Time( time, format = 'mjd', scale = 'utc', location = (longDeg, '45d') )
 	time = time.iso
 	time = Time( time, format = 'iso', scale = 'utc', location = (longDeg, '45d') )
 	time = time.isot
 	return time
-
 
 def EditDates(fitsfile, start_LIGO, stop_LIGO, start_VIRGO, stop_VIRGO, suffixtitle):
 	data, header = fits.getdata(fitsfile, header=True)
@@ -104,7 +104,10 @@ def EditDates(fitsfile, start_LIGO, stop_LIGO, start_VIRGO, stop_VIRGO, suffixti
 	delta = (NewDate.value - Inj_time)
 	InvSideRealTime =	TransformDates(OldDate, delta)
 	header['DATE-OBS'] = InvSideRealTime
-	outputfile = fitsfile.replace('.fits.gz', '-' + suffixtitle + '.fits.gz')
+	
+	path, filename = os.path.split(fitsfile)
+	outputfile = filename.replace('.fits.gz', '-' + suffixtitle + '.fits.gz')
+	outputfile = os.path.join(folddir, outputfile)
 	fits.writeto(outputfile, data, header, clobber=True)
 	
 

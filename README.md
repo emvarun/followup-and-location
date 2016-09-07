@@ -83,7 +83,7 @@ open the terminal and once in the directory where these codes exist, run
 python Loop_SkyPatch.py
 ```
 One will get the output files in the directory given by variable 'Location_Datafiles' in the 
-'params.py' file. The file 'params.py' also contains the description of all the variables involved.
+'params.py' file. The file 'params.py' contains the description of all the variables involved.
 				
 
 4.	Post-Analysis: Plots and Tables
@@ -96,7 +96,14 @@ python Coverage_Analysis.py
 The code returns a boxplot which compares the performance
 of different locations for all the fits files. A table is returned which contains the mean 
 and median of the probability distribution for a given location and the first and third 
-quartile values. The 'params.py' explains the variables involved.
+quartile values. The parameters taken by the function 'ReadData' are explained below. 
+The variable 'IfAllNDet' is a bool value parameter which if True analyses and plots all 
+the events  irrespective of the number of detectors involved. However, when set as False,
+it reads only the those events which are recovered by the number of detectors defined by
+'Ndets'. The variable 'PeriodComb' is also a bool variable which when initialized as True,
+considers only those events in the analysis that occured during the period of the year defined
+by 'Period'. Eg. if period is set to 'Sep', the analysis will consider all events that occur 
+in August, September and October.
 
-	
+
 For any queries feel free to contact me Varun Srivastava (varun.srivastava@students.iiserpune.ac.in)
