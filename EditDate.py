@@ -107,6 +107,7 @@ def EditDates(fitsfile, start_LIGO, stop_LIGO, start_VIRGO, stop_VIRGO, isVIRGO,
 		isoverlap, period = getOverlap(start_LIGO, stop_LIGO, start_VIRGO, stop_VIRGO)
 	else:
 		isoverlap = False
+	
 	if(dets.find('H1') != -1 and dets.find('L1') != -1 and dets.find('V1') == -1): 										# HL Patches
 		if(isoverlap == False and isVIRGO == False):
 			NewDate = np.random.uniform(start_LIGO, stop_LIGO + 1)
@@ -123,7 +124,7 @@ def EditDates(fitsfile, start_LIGO, stop_LIGO, start_VIRGO, stop_VIRGO, isVIRGO,
 			NewDate = np.random.uniform(period[0], period[1] + 1)
 		EditandWrite(NewDate, Inj_time, OldDate, header, fitsfile, suffixtitle, folddir, data)
 
-	if(dets.find('H1') != -1 and dets.find('L1') != -1 and dets.find('V1') != -1 and isVIRGO == True):	# Three Detector Patches
+	if(dets.find('H1') != -1 and dets.find('L1') != -1 and dets.find('V1') != -1 and isVIRGO == True): # Three Detector Patches
 		NewDate = np.random.uniform(start_VIRGO, stop_VIRGO + 1) 
 		EditandWrite(NewDate, Inj_time, OldDate, header, fitsfile, suffixtitle, folddir, data)
 
