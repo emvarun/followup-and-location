@@ -14,6 +14,14 @@ def PromptEditDate():
 		print 'Dates not editted \n'
 	return boolval
 
+def PromptVirgo():
+	boolval= raw_input('Is VIRGO in operation? \n')
+	if( boolval == 'True' or boolval == 'Yes' or boolval == 'yes' or boolval == 'y'  or boolval == 'Y' or boolval == '1'):
+		boolval = True
+	else:
+		boolval = False
+	return boolval
+
 def StdDatetoMJD(input_list):
 	'''		Converts the standard date YYYY-MM-DD to the MJD
 	'''
@@ -42,11 +50,16 @@ def PromptStartEndDate():
 	input_list = raw_input('Enter the stop date of LIGO Operation: (Day, Month, Year)   ')
 	stop_LIGO = StdDatetoMJD(input_list)
 	############################ NOTE THAT LIGO IS ASSUMED ON IN THE PERIOD OF VIRGO ON ############################
-	input_list= raw_input( 'Enter the start date of VIRGO Operation: (Day, Month, Year)  ')
-	start_VIRGO = StdDatetoMJD(input_list)
-	input_list = raw_input('Enter the stop date of VIRGO Operation: (Day, Month, Year)   ')
-	stop_VIRGO = StdDatetoMJD(input_list)
-	return start_LIGO, stop_LIGO, start_VIRGO, stop_VIRGO
+	isVIRGO = PromptVirgo()
+	if (isVIRGO == True):
+		input_list= raw_input( 'Enter the start date of VIRGO Operation: (Day, Month, Year)  ')
+		start_VIRGO = StdDatetoMJD(input_list)
+		input_list = raw_input('Enter the stop date of VIRGO Operation: (Day, Month, Year)   ')
+		stop_VIRGO = StdDatetoMJD(input_list)
+	else:
+		start_VIRGO = start_LIGO
+		stop_VIRGO = start_LIGO - 1
+	return start_LIGO, stop_LIGO, start_VIRGO, stop_VIRGO, isVIRGO
 
 def getOverlap(start_LIGO, stop_LIGO, start_VIRGO, stop_VIRGO):
 	'''	Check if the two periods of observation have any overlap.
@@ -72,7 +85,17 @@ def TransformDates(Inj_time, delta, longDeg = '45d'):
 	time = time.isot
 	return time
 
-def EditDates(fitsfile, start_LIGO, stop_LIGO, start_VIRGO, stop_VIRGO, suffixtitle):
+def EditandWrite(NewDate, Inj_time, OldDate, header, fitsfile, suffixtitle, folddir, data):
+	NewDate = Time( NewDate, format = 'mjd', scale = 'utc')
+	delta = (NewDate.value - Inj_time)
+	InvSideRealTime =	TransformDates(OldDate, delta)
+	header['DATE-OBS'] = InvSideRealTime
+	path, filename = os.path.split(fitsfile)
+	outputfile = filename.replace('.fits.gz', '-' + suffixtitle + '.fits.gz')
+	outputfile = os.path.join(folddir, outputfile)
+	fits.writeto(outputfile, data, header, clobber=True)
+
+def EditDates(fitsfile, start_LIGO, stop_LIGO, start_VIRGO, stop_VIRGO, isVIRGO, suffixtitle):
 	data, header = fits.getdata(fitsfile, header=True)
 	f = fits.open(fitsfile)
 	stim= f[1].header["DATE-OBS"]
@@ -80,9 +103,14 @@ def EditDates(fitsfile, start_LIGO, stop_LIGO, start_VIRGO, stop_VIRGO, suffixti
 	Inj_time = stim[:10]+" "+stim[11:]
 	OldDate = Time( Inj_time, format = 'iso', scale = 'utc')
 	Inj_time = OldDate.mjd
-	isoverlap, period = getOverlap(start_LIGO, stop_LIGO, start_VIRGO, stop_VIRGO)
+	if(isVIRGO == True):
+		isoverlap, period = getOverlap(start_LIGO, stop_LIGO, start_VIRGO, stop_VIRGO)
+	else:
+		isoverlap = False
 	if(dets.find('H1') != -1 and dets.find('L1') != -1 and dets.find('V1') == -1): 										# HL Patches
-		if(isoverlap == False):
+		if(isoverlap == False and isVIRGO == False):
+			NewDate = np.random.uniform(start_LIGO, stop_LIGO + 1)
+		if(isoverlap == False and isVIRGO == True):
 			NewDate = [ np.random.uniform(start_LIGO, stop_LIGO + 1), np.random.uniform(start_VIRGO, stop_VIRGO + 1) ]
 			Period_LIGO, Period_VIRGO = stop_LIGO + 1. - start_LIGO, stop_VIRGO + 1 - start_VIRGO
 			AcceptRatio = Period_LIGO/(Period_VIRGO+Period_LIGO)
@@ -91,31 +119,25 @@ def EditDates(fitsfile, start_LIGO, stop_LIGO, start_VIRGO, stop_VIRGO, suffixti
 				NewDate = NewDate[0]
 			else:
 				NewDate = NewDate[1]
-		else:
+		if(isoverlap == True and isVIRGO == True):
 			NewDate = np.random.uniform(period[0], period[1] + 1)
+		EditandWrite(NewDate, Inj_time, OldDate, header, fitsfile, suffixtitle, folddir, data)
 
-	if(dets.find('H1') != -1 and dets.find('L1') != -1 and dets.find('V1') != -1):										# Three Detector Patches
+	if(dets.find('H1') != -1 and dets.find('L1') != -1 and dets.find('V1') != -1 and isVIRGO == True):	# Three Detector Patches
 		NewDate = np.random.uniform(start_VIRGO, stop_VIRGO + 1) 
+		EditandWrite(NewDate, Inj_time, OldDate, header, fitsfile, suffixtitle, folddir, data)
 
-	if(dets.find('H1') != -1 or dets.find('L1') != -1 and dets.find('V1') != -1 and len(dets) < 6):		# HV or LV patches
-		NewDate = np.random.uniform(start_VIRGO, stop_VIRGO + 1) 
-
-	NewDate = Time( NewDate, format = 'mjd', scale = 'utc')
-	delta = (NewDate.value - Inj_time)
-	InvSideRealTime =	TransformDates(OldDate, delta)
-	header['DATE-OBS'] = InvSideRealTime
-	
-	path, filename = os.path.split(fitsfile)
-	outputfile = filename.replace('.fits.gz', '-' + suffixtitle + '.fits.gz')
-	outputfile = os.path.join(folddir, outputfile)
-	fits.writeto(outputfile, data, header, clobber=True)
-	
+	if(dets.find('H1') != -1 or dets.find('L1') != -1 ):
+		if(dets.find('V1') != -1 and len(dets) < 6 and isVIRGO == True):	# HV or LV patches
+			print 'HERE ', dets
+			NewDate = np.random.uniform(start_VIRGO, stop_VIRGO + 1) 
+			EditandWrite(NewDate, Inj_time, OldDate, header, fitsfile, suffixtitle, folddir, data)	
 
 
 boolval = PromptEditDate()
 if boolval:
 	fitsfiles = GetFitsfilesList(rootdir)
-	start_LIGO, stop_LIGO, start_VIRGO, stop_VIRGO = PromptStartEndDate()
-	print '\n THE FILES WITH MODIFIED DATES WILL BE OUTPUTED IN THE SAME FOLDER WITH "'+ str(suffix2ModDateFits) + '" APPENDED TO ITS NAME \n'
+	start_LIGO, stop_LIGO, start_VIRGO, stop_VIRGO, isVIRGO = PromptStartEndDate()
+	print '\n THE FILES WITH MODIFIED DATES WILL BE OUTPUTED IN THE DIRECTORY : \n \t "' + str(folddir) + '" WITH "'+ str(suffix2ModDateFits) + '" APPENDED TO ITS NAME \n'
 	for fitsfile in fitsfiles:
-		EditDates(fitsfile, start_LIGO, stop_LIGO, start_VIRGO, stop_VIRGO, suffix2ModDateFits)
+		EditDates(fitsfile, start_LIGO, stop_LIGO, start_VIRGO, stop_VIRGO, isVIRGO, suffix2ModDateFits)

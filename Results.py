@@ -17,7 +17,7 @@ def Data(Location_Datafiles, NsqDeg, obsName, Ndets, IfAllNDet = False, Period =
 		n.append([])
 		D.append([])
 
-	filename = os.path.join(Location_Datafiles, 'Summary')
+	filename = outfile
 	filename = filename + '-' + str(obsName)+ '.txt'
 	print filename
 	with open(filename) as f:

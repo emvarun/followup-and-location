@@ -1,10 +1,10 @@
 import os
 from Observatory import ObsDetail
 #################################### EDIT-DATE ##########################################
-#Location of all the fits file
+#Location of all the fits file downloaded 
 rootdir = '/home/varun/IUCAA/O2-Analysis/Sky_Patch/EM-Analysis-Patch/All-2015'
 #Suffix the modified patches with:
-suffix2ModDateFits = 'Mod-Date'
+suffix2ModDateFits = 'O1-Dates'
 # The location where the files with modified days are saved. 
 folddir = '/home/varun/IUCAA/O2-Analysis/Sky_Patch/Mod-Dates/O1-Period'
 if not os.path.exists(folddir):
