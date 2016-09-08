@@ -103,9 +103,10 @@ it reads only the those events which are recovered by the number of detectors de
 'Ndets'. The variable 'PeriodComb' is also a bool variable which when initialized as True,
 considers only those events in the analysis that occured during the period of the year defined
 by 'Period'. Eg. if period is set to 'Sep', the analysis will consider all events that occur 
-in August, September and October. The variable 'yaxisTop' defines the upper probability limit
-of each of the subplots. This has to be editted accordingly when one makes any change to the
-'NsqDeg' variable.
+in August, September and October. Lastly, the variable 'yaxisTop' assigns the upper probability 
+limit to each of the boxplot-subplots which correspond to a given square degree covering 
+capability at all locations of inspection. This variable 'yaxisTop' has to be editted 
+accordingly whenever one makes any change to the 'NsqDeg' variable in 'params.py'.
 
 
 For any queries feel free to contact me Varun Srivastava (varun.srivastava@students.iiserpune.ac.in)
